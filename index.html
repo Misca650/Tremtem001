@@ -9,9 +9,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="loading"><button>Click to continue</button></div>
     <div class="blurex"></div>
 
+    <div class="music-open-left">
+        <button class="music-btn open" id="musicOn"><i class="fas fa-play"></i></button>
+    </div>
+
     <div class="content">
+        <div class="music">
+            <button class="music-btn close" id="musicOff"><i class="fas fa-times"></i></button>
+            <div class="music-info">
+                <img class="music-img" src="./img/pp.png" alt="Music">
+                <div class="music-text">
+                    <h2>U CAN'T SEE ME</h2>
+                    <p>YOUNGGU X P6ICK</p>
+                </div>
+            </div>
+            <audio id="music" src="./img/music.mp3" loop preload="auto"></audio>
+            <div class="music-controls">
+                <button class="music-btn" id="musicPlay"><i class="fas fa-play"></i></button>
+                <div class="music-bar">
+                    <div class="music-bar-fill"></div>
+                    <div class="music-bar-back"></div>
+                </div>
+            </div>
+        </div>
         <div class="card">
 
             <img src="./img/pp.png" alt="Logo">
@@ -25,8 +48,8 @@
                 <a href="https://discord.gg/invite/tremtem" target="_blank"> <i class="fa-solid fa-handshake"></i> TyperTown</a>
             </div>
 
-            <p>hi everyone, i'm tremtem and i'm the owner of vexel-studio and developer redtown and typer town i love to code and create amazing things my good language is roblox script and i'm working on discord bots and websites <br> " My school is Sarasas Witaed Lanna School " </p>
-
+            <p class="love"> <i class="fas fa-heart"></i> SaiMai </p>
+ 
             <div class="socials">
                 <a class="discord" href="https://discord.gg/JEv2SRMvhD" target="_blank"> <i class="fab fa-discord"></i> VexelStudio</a>
                 <a class="discord" href="https://discord.gg/j3caHyD9GU" target="_blank"> <i class="fab fa-discord"></i> RedTown</a>
@@ -35,5 +58,64 @@
             </div>
         </div>
     </div>
+    <script>
+        const music = document.getElementById('music');
+        const musicPlay = document.getElementById('musicPlay');
+        const progressFill = document.querySelector('.music-bar-fill');
+        const musicPanel = document.querySelector('.music');
+        const musicOpenLeft = document.querySelector('.music-open-left');
+        
+        document.querySelector('.loading button').addEventListener('click', function() {
+            document.querySelector('.loading').classList.add('off');
+            document.querySelector('.content').classList.add('on');
+            document.querySelector('.loading').style.display = 'none';
+        
+            music.play().then(() => {
+                musicPlay.innerHTML = '<i class="fas fa-pause"></i>';
+            }).catch(err => {
+                console.log('Autoplay blocked:', err);
+                musicPlay.innerHTML = '<i class="fas fa-play"></i>';
+            });
+        });
+    
+        musicPlay.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                musicPlay.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                music.pause();
+                musicPlay.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+    
+        // live progress bar
+        music.addEventListener('timeupdate', () => {
+            if (music.duration) {
+                const pct = (music.currentTime / music.duration) * 100;
+                progressFill.style.width = pct + '%';
+            }
+        });
+    
+        // music panel: close
+        document.getElementById('musicOff').addEventListener('click', () => {
+            musicPanel.classList.remove('on');
+            musicPanel.classList.add('off');
+            musicOpenLeft.classList.remove('off');
+            musicOpenLeft.classList.add('on');
+        
+            setTimeout(() => {
+                musicPanel.style.display = 'none';
+            }, 300);
+        });
+    
+        // music panel: open
+        document.getElementById('musicOn').addEventListener('click', () => {
+            musicPanel.style.display = ''; // reset the display:none from close
+            musicPanel.classList.remove('off');
+            musicPanel.classList.add('on');
+            musicOpenLeft.classList.remove('on');
+            musicOpenLeft.classList.add('off');
+        });
+    </script>
 </body>
 </html>
